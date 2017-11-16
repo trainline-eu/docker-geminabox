@@ -1,13 +1,18 @@
 FROM ruby:2.4.2-alpine3.6
 
 RUN \
+apk add --no-cache curl ;\
 gem install geminabox ;\
-mkdir -p /opt/geminabox/conf /opt/geminabox/data
+mkdir -p /opt/geminabox/data
 
-ADD /config.ru /opt/geminabox/conf
-
-WORKDIR /opt/geminabox/conf
+ADD /conf.d/* /opt/geminabox/conf/
 
 EXPOSE 9292
 
-ENTRYPOINT [ "rackup", "--host", "0.0.0.0" ]
+ADD docker-*.sh /
+
+HEALTHCHECK --interval=10s --timeout=10s --retries=90 CMD /docker-healthcheck.sh
+
+WORKDIR /opt/geminabox/conf
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+CMD [ "rackup", "--host", "0.0.0.0" ]

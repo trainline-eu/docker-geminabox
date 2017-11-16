@@ -2,8 +2,12 @@
 sudo: required
 services:
   - docker
+env:
+  global:
+    - IMAGE_OWNER=trainlineeurope
+    - IMAGE_NAME=geminabox
 install:
-  - docker build -t mvisonneau/geminabox:latest .
-  - docker run -d --name geminabox mvisonneau/geminabox:latest
+  - docker build -t ${IMAGE_OWNER}/${IMAGE_NAME}:latest .
+  - docker run -d --name ${IMAGE_NAME} ${IMAGE_OWNER}/${IMAGE_NAME}:latest
 script:
-  - docker ps | grep -q geminabox && echo "CONTAINER BUILT & RUNNING SUCCESSFULLY" || echo "CONTAINER NOT RUNNING"
+  - docker ps | grep -q ${IMAGE_NAME} && echo "CONTAINER BUILT & RUNNING SUCCESSFULLY" || echo "CONTAINER NOT RUNNING"
