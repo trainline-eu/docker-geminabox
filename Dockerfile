@@ -1,8 +1,11 @@
 FROM ruby:2.4.2-alpine3.6
 
+ENV \
+GEMINABOX_VERSION=0.13.10
+
 RUN \
 apk add --no-cache curl ;\
-gem install geminabox ;\
+gem install geminabox -v ${GEMINABOX_VERSION} ;\
 mkdir -p /opt/geminabox/data
 
 ADD /conf.d/* /opt/geminabox/conf/
